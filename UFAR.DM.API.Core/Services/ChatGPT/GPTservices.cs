@@ -3,11 +3,8 @@ using OpenAI_API.Chat;
 
 namespace UFAR.DM.API.Core.Services.ChatGPT {
     public class GPTservices : IGPTservices {
-        public string GetSynonym(string word) {
-            var prompt = "Veuillez fournir un synonyme pour le mot français \"" + word + "\"," +
-                " ou s'il n'y a pas de synonyme exact, fournissez plutôt une définition. " +
-                "Veuillez vous assurer que la réponse ne contient que le synonyme ou la définition demandée, " +
-                "sans aucun signe, ponctuation ou mot supplémentaire.";
+        public string Generate(string request) {
+            var prompt = request;
 
             var openAI = new OpenAIAPI("");
 
@@ -31,54 +28,28 @@ namespace UFAR.DM.API.Core.Services.ChatGPT {
             return "Request failed.";
         }
 
+        public string GetSynonym(string word) {
+            string prompt = "Veuillez fournir un synonyme pour le mot français \"" + word + "\"," +
+                " ou s'il n'y a pas de synonyme exact, fournissez plutôt une définition. " +
+                "Veuillez vous assurer que la réponse ne contient que le synonyme ou la définition demandée, " +
+                "sans aucun signe, ponctuation ou mot supplémentaire.";
+
+            string answer = Generate(prompt);
+            return answer;  
+        }
+
         public string CorrectWord(string word) {
-            var prompt = "Corrigez le mot \"" + word + "\" et envoiez la version corrige. Si le mot est valide, envoiez le meme mot.";
+            string prompt = "Corrigez le mot \"" + word + "\" et envoiez la version corrige. Si le mot est valide, envoiez le meme mot.";
 
-            var openAI = new OpenAIAPI("");
-
-            var response = openAI.Chat.CreateChatCompletionAsync
-                (
-                    new ChatRequest {
-                        Messages = new List<ChatMessage>() {
-                            new ChatMessage() {
-                                TextContent = prompt,
-                            }
-                        },
-                        MaxTokens = 1000,
-                        Temperature = 0.1,
-                        Model = "gpt-3.5-turbo"
-                    }
-                ).Result;
-
-            foreach (var item in response.Choices) {
-                return item.Message.TextContent;
-            }
-            return "Request failed.";
+            string answer = Generate(prompt);
+            return answer;
         }
 
         public string CorrectExp(string exp) {
             var prompt = "Corrigez l'expression \"" + exp + "\" et envoiez la version corrige. Si l'expression est valide, envoiez le meme expression.";
 
-            var openAI = new OpenAIAPI("");
-
-            var response = openAI.Chat.CreateChatCompletionAsync
-                (
-                    new ChatRequest {
-                        Messages = new List<ChatMessage>() {
-                            new ChatMessage() {
-                                TextContent = prompt,
-                            }
-                        },
-                        MaxTokens = 1000,
-                        Temperature = 0.1,
-                        Model = "gpt-3.5-turbo"
-                    }
-                ).Result;
-
-            foreach (var item in response.Choices) {
-                return item.Message.TextContent;
-            }
-            return "Request failed.";
+            string answer = Generate(prompt);
+            return answer;
         }
 
         public string LevelOfSection(string wordsAndExpressions) {
@@ -88,26 +59,8 @@ namespace UFAR.DM.API.Core.Services.ChatGPT {
                 "N'outilise pas les autres mots dans la reponse! " +
                 "Et aussi, ne dire pas \"Le niveau moyenne...\". Dire seulement le niveau.";
 
-            var openAI = new OpenAIAPI("");
-
-            var response = openAI.Chat.CreateChatCompletionAsync
-                (
-                    new ChatRequest {
-                        Messages = new List<ChatMessage>() {
-                            new ChatMessage() {
-                                TextContent = prompt,
-                            }
-                        },
-                        MaxTokens = 1000,
-                        Temperature = 0.1,
-                        Model = "gpt-3.5-turbo"
-                    }
-                ).Result;
-
-            foreach (var item in response.Choices) {
-                return item.Message.TextContent;
-            }
-            return "Request failed.";
+            string answer = Generate(prompt);
+            return answer;
         }
 
         public string LevelOfWordOrExpression(string wordOrExp) {
@@ -116,26 +69,8 @@ namespace UFAR.DM.API.Core.Services.ChatGPT {
                             "N'outilise pas les autres mots dans la reponse! " +
                             "Et aussi, ne dire pas \"Le niveau est...\". Dire seulement le niveau.";
 
-            var openAI = new OpenAIAPI("");
-
-            var response = openAI.Chat.CreateChatCompletionAsync
-                (
-                    new ChatRequest {
-                        Messages = new List<ChatMessage>() {
-                            new ChatMessage() {
-                                TextContent = prompt,
-                            }
-                        },
-                        MaxTokens = 1000,
-                        Temperature = 0.1,
-                        Model = "gpt-3.5-turbo"
-                    }
-                ).Result;
-
-            foreach (var item in response.Choices) {
-                return item.Message.TextContent;
-            }
-            return "Request failed.";
+            string answer = Generate(prompt);
+            return answer;
         }
 
         public string RandomN(string WoE, string r1 = "", string r2 = "") {
@@ -148,26 +83,8 @@ namespace UFAR.DM.API.Core.Services.ChatGPT {
                 prompt = "Donnez moi un mot ou une definition au hazard sauf \'" + r1 + "\' et \'" + r2 + "\', qui n'est pas l'un des synonymes du mot '" + WoE + "'. Envoiez seulement le mot ou la definition.";
             }
 
-            var openAI = new OpenAIAPI("");
-
-            var response = openAI.Chat.CreateChatCompletionAsync
-                (
-                    new ChatRequest {
-                        Messages = new List<ChatMessage>() {
-                            new ChatMessage() {
-                                TextContent = prompt,
-                            }
-                        },
-                        MaxTokens = 1000,
-                        Temperature = 0.1,
-                        Model = "gpt-3.5-turbo"
-                    }
-                ).Result;
-
-            foreach (var item in response.Choices) {
-                return item.Message.TextContent;
-            }
-            return "Request failed.";
+            string answer = Generate(prompt);
+            return answer;
         }
     }
 }
