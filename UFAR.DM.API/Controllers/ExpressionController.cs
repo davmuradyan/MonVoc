@@ -33,7 +33,7 @@ namespace UFAR.DM.API.Controllers {
             return Ok(rv);
         }
 
-        [HttpPost("GetExpressionsWithID")]
+        [HttpGet("GetExpressionsWithID")]
         public IActionResult GetExpressions(int sectionId) {
             return Ok(services.GetExpressionsWithId(sectionId));
         }

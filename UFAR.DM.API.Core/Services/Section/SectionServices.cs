@@ -160,8 +160,12 @@ namespace UFAR.DM.API.Core.Services.Section {
             context.SaveChanges();
         }
         public bool HasWord(int sectionId, string word) {
-            SectionEntity sectionWithWords = GetSectionWithWords(sectionId);
+            SectionEntity? sectionWithWords = GetSectionWithWords(sectionId);
             word = word.ToLower();
+            if (sectionWithWords == null)
+            {
+                return false;
+            }
             foreach (var w in sectionWithWords.Words) {
                 if (w.Word == word) {
                     return true;
@@ -179,19 +183,34 @@ namespace UFAR.DM.API.Core.Services.Section {
             }
             return false;
         }
-        public ICollection<SectionEntity> GetSections() {
+        public ICollection<SectionForReturnEntity> GetSections() {
+            ICollection<SectionForReturnEntity> returnSections = new HashSet<SectionForReturnEntity>();
             ICollection<SectionEntity> sections = new HashSet<SectionEntity>();
-            foreach (var section in context.Sections) {
-                sections.Add(section);
+            foreach(var s in context.Sections) {
+                sections.Add(s);
             }
-            return sections;
+            
+
+            foreach (var section in sections) {
+                int wordCount = GetWordCount(section.Id);
+                int expressionCount = GetExpressionCount(section.Id);
+                SectionForReturnEntity sectionForReturn = new SectionForReturnEntity {
+                    Id = section.Id,
+                    name = section.Name,
+                    words = wordCount,
+                    expressions = expressionCount,
+                    level = section.Level
+                };
+                returnSections.Add(sectionForReturn);
+            }
+            return returnSections;
         }
         public ICollection<QuizzEntity> MakeQuizz(int sectionId) {
             SectionEntity section = GetSectionWithQuestions(sectionId);
             ICollection<QuizzEntity> quizz = new HashSet<QuizzEntity>();
             Random rnd = new Random();
             int right;
-            string rAnswer = "";
+            int rAnswer = -1;
             string a = "", b = "", c = "", d = "";
             string question;
 
@@ -200,28 +219,28 @@ namespace UFAR.DM.API.Core.Services.Section {
                 right = rnd.Next(1, 5);
                 switch (right) {
                     case 1:
-                        rAnswer = "A";
+                        rAnswer = 0;
                         a = q.Synonym;
                         b = q.Random1;
                         c = q.Random2;
                         d = q.Random3;
                         break;
                     case 2:
-                        rAnswer = "B";
+                        rAnswer = 1;
                         b = q.Synonym;
                         a = q.Random1;
                         c = q.Random2;
                         d = q.Random3;
                         break;
                     case 3:
-                        rAnswer = "C";
+                        rAnswer = 2;
                         c = q.Synonym;
                         a = q.Random1;
                         b = q.Random2;
                         d = q.Random3;
                         break;
                     case 4:
-                        rAnswer = "D";
+                        rAnswer = 3;
                         d = q.Synonym;
                         a = q.Random1;
                         b = q.Random2;
@@ -242,6 +261,14 @@ namespace UFAR.DM.API.Core.Services.Section {
             }
 
             return quizz;
+        }
+        public int GetSectionNumber() {
+            int num = 0;
+            foreach (var sec in context.Sections)
+            {
+                num++;
+            }
+            return num;
         }
     }
 }

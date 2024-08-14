@@ -22,6 +22,7 @@ builder.Services.AddScoped<IQuestionServices, QuestionServices>();
 builder.Services.AddScoped<IWordServices, WordServices>();
 builder.Services.AddScoped<IExpressionServices, ExpressionServices>();
 builder.Services.AddScoped<ISectionServices, SectionServices>();
+builder.Services.AddApplicationInsightsTelemetry();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

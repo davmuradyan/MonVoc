@@ -31,7 +31,7 @@ namespace UFAR.DM.API.Controllers {
             return Ok(rv);
         }
 
-        [HttpPost("GetWordsWithID")]
+        [HttpGet("GetWordsWithID")]
         public IActionResult GetWords(int sectionId) {
             return Ok(services.GetWordsWithId(sectionId));
         }

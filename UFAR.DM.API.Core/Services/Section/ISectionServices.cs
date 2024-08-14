@@ -39,9 +39,12 @@ namespace UFAR.DM.API.Core.Services.Section {
         public bool HasExp(int sectionId, string exp);
 
         //Returns sections
-        public ICollection<SectionEntity> GetSections();
+        public ICollection<SectionForReturnEntity> GetSections();
 
         //Creates a quizz based on questions that have been already created
         public ICollection<QuizzEntity> MakeQuizz(int sectionId);
+
+        //Returns number of existing sections
+        public int GetSectionNumber();
     }
 }
