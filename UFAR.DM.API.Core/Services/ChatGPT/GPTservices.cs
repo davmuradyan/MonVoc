@@ -6,7 +6,7 @@ namespace UFAR.DM.API.Core.Services.ChatGPT {
         public string Generate(string request) {
             var prompt = request;
 
-            var openAI = new OpenAIAPI("sk-proj-ulO2estcIwnzqST1NHCbT3BlbkFJfdEcgCa1UxxOhOn5Qq5S");
+            var openAI = new OpenAIAPI(""); // API key of openAI
 
             var response = openAI.Chat.CreateChatCompletionAsync
                 (
